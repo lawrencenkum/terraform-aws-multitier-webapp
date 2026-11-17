@@ -1,0 +1,22 @@
+# Terraform working folder (downloaded providers, can be re-downloaded)
+.terraform/
+
+# Terraform state: real infrastructure details, sometimes secrets
+*.tfstate
+*.tfstate.*
+
+# Terraform plan files and crash logs
+*.tfplan
+crash.log
+crash.*.log
+
+# Variable files with real values (we commit a *.example copy instead)
+*.tfvars
+*.tfvars.json
+!*.tfvars.example
+
+# AWS access key downloads and other secrets
+*accessKeys*.csv
+.env
+*.pem
+*.key
