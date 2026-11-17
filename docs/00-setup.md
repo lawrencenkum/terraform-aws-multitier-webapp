@@ -73,3 +73,28 @@ output = json
 **Lesson:** `~/.aws/config` holds settings (safe to share); `~/.aws/credentials`
 holds secrets (never share). In config the section is written [profile terraform_dev],
 in credentials just [terraform_dev].
+
+## 0.4 Verify the identity Terraform will use
+
+**What:** Confirmed that the `terraform_dev` profile authenticates as the
+`terraform-dev` IAM user.
+
+**Why:** Before any infrastructure change, I verify which identity and account
+will be used, to avoid deploying into the wrong account.
+
+**How:**
+```bash
+aws sts get-caller-identity --profile terraform_dev
+```
+
+**Proof:** (account ID masked)
+```json
+{
+  "UserId": "AIDA****************",
+  "Account": "xxxxxxxxxxxx",
+  "Arn": "arn:aws:iam::xxxxxxxxxxxx:user/terraform-dev"
+}
+```
+
+**Lesson:** The Arn ending in user/terraform-dev proves the profile maps to the
+correct identity. I will run this check before every terraform apply.
