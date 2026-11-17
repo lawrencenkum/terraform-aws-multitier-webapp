@@ -47,3 +47,29 @@ stored outside any Git repository.
 **Lesson / trade-off:** `AdministratorAccess` is not least privilege. I accepted it
 for a personal learning account protected by MFA and a budget alarm. In a company
 I would use IAM Identity Center with short-lived credentials and a scoped role.
+
+## 0.3 Store credentials in a named AWS CLI profile
+
+**What:** Stored the `terraform-dev` access key in a local AWS CLI profile named
+`terraform_dev` (region `us-east-1`, output `json`).
+
+**Why:** Terraform code will reference only the profile name. The key itself stays
+in `~/.aws/credentials`, outside the repository, so the code can be public safely.
+
+**How:**
+```bash
+aws configure --profile terraform_dev
+aws configure list-profiles
+cat ~/.aws/config
+```
+
+**Proof:**
+```text
+[profile terraform_dev]
+region = us-east-1
+output = json
+```
+
+**Lesson:** `~/.aws/config` holds settings (safe to share); `~/.aws/credentials`
+holds secrets (never share). In config the section is written [profile terraform_dev],
+in credentials just [terraform_dev].
