@@ -27,7 +27,7 @@ the access key secret.
 
 ## 0.2 Create a dedicated automation user for Terraform
 
-**What:** Created the IAM user `terraform-dev` with programmatic access only (no
+**What:** Created the IAM user `terraform_dev` with programmatic access only (no
 console password), attached the `AdministratorAccess` policy, and created one
 access key for CLI use.
 
@@ -35,14 +35,14 @@ access key for CLI use.
 leaked key can be revoked without affecting my own login.
 
 **How:**
-IAM → Users → Create user → `terraform-dev` (console access disabled) →
+IAM → Users → Create user → `terraform_dev` (console access disabled) →
 Attach policies directly → `AdministratorAccess` → Security credentials →
 Create access key → use case: Command Line Interface.
 
-**Proof:** IAM lists `terraform-dev` with 1 active access key. The key file is
+**Proof:** IAM lists `terraform_dev` with 1 active access key. The key file is
 stored outside any Git repository.
 
-![terraform-dev user](images/0-02-terraform-dev-user.png)
+![terraform_dev user](images/0-02-terraform_dev-user.png)
 
 **Lesson / trade-off:** `AdministratorAccess` is not least privilege. I accepted it
 for a personal learning account protected by MFA and a budget alarm. In a company
@@ -50,7 +50,7 @@ I would use IAM Identity Center with short-lived credentials and a scoped role.
 
 ## 0.3 Store credentials in a named AWS CLI profile
 
-**What:** Stored the `terraform-dev` access key in a local AWS CLI profile named
+**What:** Stored the `terraform_dev` access key in a local AWS CLI profile named
 `terraform_dev` (region `us-east-1`, output `json`).
 
 **Why:** Terraform code will reference only the profile name. The key itself stays
@@ -77,7 +77,7 @@ in credentials just [terraform_dev].
 ## 0.4 Verify the identity Terraform will use
 
 **What:** Confirmed that the `terraform_dev` profile authenticates as the
-`terraform-dev` IAM user.
+`terraform_dev` IAM user.
 
 **Why:** Before any infrastructure change, I verify which identity and account
 will be used, to avoid deploying into the wrong account.
@@ -92,17 +92,17 @@ aws sts get-caller-identity --profile terraform_dev
 {
   "UserId": "AIDA****************",
   "Account": "xxxxxxxxxxxx",
-  "Arn": "arn:aws:iam::xxxxxxxxxxxx:user/terraform-dev"
+  "Arn": "arn:aws:iam::xxxxxxxxxxxx:user/terraform_dev"
 }
 ```
 
-**Lesson:** The Arn ending in user/terraform-dev proves the profile maps to the
+**Lesson:** The Arn ending in user/terraform_dev proves the profile maps to the
 correct identity. I will run this check before every terraform apply.
 
 ## 0.4b Remove long-lived keys from my console user
 
 **What:** Deactivated the access key on my console user `Terraform_agent`, so
-only the automation user `terraform-dev` holds an access key.
+only the automation user `terraform_dev` holds an access key.
 
 **Why:** Human identities should not hold long-lived access keys. Before this
 change, a leaked key would have exposed the same identity I use to log in.
@@ -111,7 +111,7 @@ change, a leaked key would have exposed the same identity I use to log in.
 Actions → Deactivate. Scheduled deletion after one week without issues.
 
 **Proof:** `aws sts get-caller-identity` (default profile) now returns
-`InvalidClientTokenId`; `--profile terraform_dev` still returns `user/terraform-dev`.
+`InvalidClientTokenId`; `--profile terraform_dev` still returns `user/terraform_dev`.
 
 **Lesson:** Deactivate before delete: it is reversible, so I can safely confirm
 nothing else depended on the key.
