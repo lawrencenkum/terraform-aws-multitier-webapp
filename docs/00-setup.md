@@ -98,3 +98,20 @@ aws sts get-caller-identity --profile terraform_dev
 
 **Lesson:** The Arn ending in user/terraform-dev proves the profile maps to the
 correct identity. I will run this check before every terraform apply.
+
+## 0.4b Remove long-lived keys from my console user
+
+**What:** Deactivated the access key on my console user `Terraform_agent`, so
+only the automation user `terraform-dev` holds an access key.
+
+**Why:** Human identities should not hold long-lived access keys. Before this
+change, a leaked key would have exposed the same identity I use to log in.
+
+**How:** IAM → Users → Terraform_agent → Security credentials → Access keys →
+Actions → Deactivate. Scheduled deletion after one week without issues.
+
+**Proof:** `aws sts get-caller-identity` (default profile) now returns
+`InvalidClientTokenId`; `--profile terraform_dev` still returns `user/terraform-dev`.
+
+**Lesson:** Deactivate before delete: it is reversible, so I can safely confirm
+nothing else depended on the key.
