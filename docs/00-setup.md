@@ -115,3 +115,21 @@ Actions → Deactivate. Scheduled deletion after one week without issues.
 
 **Lesson:** Deactivate before delete: it is reversible, so I can safely confirm
 nothing else depended on the key.
+
+## 0.5 Create a cost alarm
+
+**What:** Created a monthly cost budget `learning-budget` of $10 with email alerts,
+and enabled Free Tier usage alerts.
+
+**Why:** Parts of this project (NAT gateways, load balancer, public IPv4) are billed
+per hour. A forgotten stack could cost over $100 per month.
+
+**How:** Billing and Cost Management → Budgets → Create budget → Monthly cost
+budget template → amount 10 USD → email recipient.
+
+**Proof:** Budgets page lists `learning-budget` with a $10.00 limit.
+
+![Budget](images/0-05-budget.png)
+
+**Lesson:** Billing data is delayed by hours, so a budget is a safety net, not a
+brake. My real control is running `terraform destroy` after every session.
