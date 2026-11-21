@@ -15,8 +15,7 @@ _Diagram coming in Phase 9._
 
 ## Project status
 - [x] Phase 0 – Secure AWS setup & repository
-- [x] Phase 0 – Secure AWS setup & repository
-- [ ] Phase 1 – First Terraform resource (VPC)
+- [x] Phase 1 – First Terraform resource (VPC)
 - [ ] Phase 2 – Network (subnets, IGW, routing)
 - [ ] Phase 3 – Variables & outputs
 - [ ] Phase 4 – NAT gateways
