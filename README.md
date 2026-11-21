@@ -15,6 +15,7 @@ _Diagram coming in Phase 9._
 
 ## Project status
 - [x] Phase 0 – Secure AWS setup & repository
+- [x] Phase 0 – Secure AWS setup & repository
 - [ ] Phase 1 – First Terraform resource (VPC)
 - [ ] Phase 2 – Network (subnets, IGW, routing)
 - [ ] Phase 3 – Variables & outputs
@@ -35,13 +36,17 @@ See [docs/00-setup.md](docs/00-setup.md).
 ```
 .
 ├── README.md
+├── versions.tf           # Terraform & provider version pins
+├── providers.tf          # AWS provider, region, default tags
+├── main.tf               # resources
+├── .terraform.lock.hcl   # exact provider version (committed)
 └── docs/
     ├── 00-setup.md          # account security & tooling
+    ├── 01-first-resource.md # first resource lifecycle
     ├── decisions.md         # design decisions and trade-offs
     ├── troubleshooting.md   # errors and fixes
     └── images/              # screenshots
 ```
-
 ## How to deploy
 _Coming in Phase 3._
 
